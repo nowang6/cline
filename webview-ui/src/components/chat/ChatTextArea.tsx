@@ -101,6 +101,13 @@ const ChatTextArea = forwardRef<HTMLTextAreaElement, ChatTextAreaProps>(
 					}
 				}
 
+				if (type === ContextMenuOptionType.Codebase) {
+					const newValue = inputValue.slice(0, cursorPosition - 1) + "#codebase" + inputValue.slice(cursorPosition)
+					setInputValue(newValue)
+					setShowContextMenu(false)
+					return
+				}
+
 				setShowContextMenu(false)
 				setSelectedType(null)
 				if (textAreaRef.current) {

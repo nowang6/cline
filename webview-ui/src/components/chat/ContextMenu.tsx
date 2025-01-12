@@ -48,6 +48,8 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
 		switch (option.type) {
 			case ContextMenuOptionType.Problems:
 				return <span>Problems</span>
+			case ContextMenuOptionType.Codebase:
+				return <span>Codebase</span>
 			case ContextMenuOptionType.URL:
 				return <span>Paste URL to fetch contents</span>
 			case ContextMenuOptionType.NoResults:
@@ -84,7 +86,9 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
 			case ContextMenuOptionType.Folder:
 				return "folder"
 			case ContextMenuOptionType.Problems:
-				return "warning"
+				return "issues"
+			case ContextMenuOptionType.Codebase:
+				return "repo"
 			case ContextMenuOptionType.URL:
 				return "link"
 			case ContextMenuOptionType.NoResults:

@@ -48,6 +48,7 @@ export enum ContextMenuOptionType {
 	Problems = "problems",
 	URL = "url",
 	NoResults = "noResults",
+	Codebase = "codebase",
 }
 
 export interface ContextMenuQueryItem {
@@ -60,6 +61,13 @@ export function getContextMenuOptions(
 	selectedType: ContextMenuOptionType | null = null,
 	queryItems: ContextMenuQueryItem[],
 ): ContextMenuQueryItem[] {
+	const beforeQuery = query.slice(0, 1)
+	
+	// Handle #codebase command
+	if (beforeQuery === "#") {
+		return [{ type: ContextMenuOptionType.Codebase, value: "codebase" }]
+	}
+
 	if (query === "") {
 		if (selectedType === ContextMenuOptionType.File) {
 			const files = queryItems
@@ -109,23 +117,5 @@ export function getContextMenuOptions(
 
 export function shouldShowContextMenu(text: string, position: number): boolean {
 	const beforeCursor = text.slice(0, position)
-	const atIndex = beforeCursor.lastIndexOf("@")
-
-	if (atIndex === -1) return false
-
-	const textAfterAt = beforeCursor.slice(atIndex + 1)
-
-	// Check if there's any whitespace after the '@'
-	if (/\s/.test(textAfterAt)) return false
-
-	// Don't show the menu if it's a URL
-	if (textAfterAt.toLowerCase().startsWith("http")) return false
-
-	// Don't show the menu if it's a problems
-	if (textAfterAt.toLowerCase().startsWith("problems")) return false
-
-	// NOTE: it's okay that menu shows when there's trailing punctuation since user could be inputting a path with marks
-
-	// Show the menu if there's just '@' or '@' followed by some text (but not a URL)
-	return true
+	return beforeCursor.endsWith("@") || beforeCursor.endsWith("#")
 }
